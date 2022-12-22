@@ -71,6 +71,7 @@ Chd|        ECND_MOD                      share/modules/ecdn_mod.F
 Chd|        ELBUFDEF_MOD                  ../common_source/modules/elbufdef_mod.F
 Chd|        FAILWAVE_MOD                  ../common_source/modules/failwave_mod.F
 Chd|        GROUPDEF_MOD                  ../common_source/modules/groupdef_mod.F
+Chd|        H3D_INC_MOD                   share/modules/h3d_inc_mod.F   
 Chd|        H3D_MOD                       share/modules/h3d_mod.F       
 Chd|        INTBUFDEF_MOD                 ../common_source/modules/intbufdef_mod.F
 Chd|        INTER_SORTING_MOD             share/modules/inter_sorting_mod.F
@@ -168,6 +169,7 @@ C-----------------------------------------------
       USE STACK_MOD
       USE OUTMAX_MOD
       USE SENSOR_MOD
+      USE H3D_INC_MOD
 C-----------------------------------------------
 C   I m p l i c i t   T y p e s
 C-----------------------------------------------
@@ -1155,12 +1157,11 @@ C-----------------------
          CALL SPMD_SUB_BOUNDARIES(NLOC_DMG,IAD_ELEM,FR_ELEM)
        ENDIF
 C       
-       IF (NUMSKINP > 0) THEN
-         DO I=1,NLOADP_B
-           NBS = PBLAST_TAB(I)%SIZ
-           ALLOCATE (PBLAST_TAB(I)%PRES(NBS))
-         ENDDO
-       END IF
+       DO I=1,NLOADP_B
+         NBS = PBLAST_TAB(I)%SIZ
+         ALLOCATE (PBLAST_TAB(I)%PRES(NBS))
+         PBLAST_TAB(I)%PRES(1:NBS)=ZERO
+       ENDDO
 C-----------------------
 C DT_DC OF TSH
 C-----------------------

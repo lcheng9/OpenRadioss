@@ -73,6 +73,7 @@ Chd|        H3D_LIST_SPH_TENSOR           source/output/h3d/input_list/h3d_list_
 Chd|        H3D_SKIN_DIM                  source/output/h3d/h3d_results/h3d_skin_ixskin.F
 Chd|        INITBUF                       share/resol/initbuf.F         
 Chd|        ELBUFDEF_MOD                  ../common_source/modules/elbufdef_mod.F
+Chd|        H3D_INC_MOD                   share/modules/h3d_inc_mod.F   
 Chd|        H3D_MOD                       share/modules/h3d_mod.F       
 Chd|        INITBUF_MOD                   share/resol/initbuf.F         
 Chd|        MESSAGE_MOD                   share/message_module/message_mod.F
@@ -92,6 +93,7 @@ C-----------------------------------------------
       USE MULTI_FVM_MOD
       USE ELBUFDEF_MOD     
       USE STACK_MOD    
+      USE H3D_INC_MOD
 C-----------------------------------------------
 C   I m p l i c i t   T y p e s
 C-----------------------------------------------
@@ -1857,7 +1859,7 @@ C=========================================================================
        IF (IOUTER==1) ISKIND=ISKIND+1
        IF (IPEXT==1) ISKIND=ISKIND+2
        CALL H3D_SKIN_DIM(IPARG   ,NUMSKIN, NUMSKING,TAG_SKINS6,
-     .                   IBCL    ,ILOADP ,LLOADP  ,NUMSKINP,ISKIND )
+     .                   IBCL    ,ILOADP ,LLOADP ,NUMSKINP0,NUMSKINP,ISKIND )
       END IF
 c For debug purpose
 c      DO I=1,H3D_DATA%N_OUTP_H3D
