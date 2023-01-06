@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  HM_READ_BEAM                  source/elements/reader/hm_read_beam.F
 Chd|-- called by -----------
@@ -151,7 +151,17 @@ C--------------------------------------------------
           CALL ANCMSG(MSGID=509,ANMODE=ANINFO,MSGTYPE=MSGERROR,
      .                I1=IXP(6,I),C1=LINE,C2='/BEAM')
         ENDIF
-                           
+C optional Node 3 
+        IF (IXP(4,I)==0 .OR. IXP(4,I)==IXP(2,I)
+     .      .OR. IXP(4,I)==IXP(3,I)) THEN
+          CALL ANCMSG(MSGID=2093,
+     .                MSGTYPE=MSGINFO,
+     .                ANMODE=ANINFO_BLIND_1,
+     .                I1=IPART(4,INDEX_PART),
+     .                I2=IXP(6,I),
+     .                PRMOD=MSG_CUMU)
+          IXP(4,I) = IXP(3,I)                    
+        ENDIF
         DO J=2,4                                            
           IXP(J,I)=USR2SYS(IXP(J,I),ITABM1,MESS,IXP(6,I))  
         ENDDO
@@ -165,6 +175,11 @@ C Node 3 is just a used node, to define directions (CHECK_USED)
 C-----------
       CALL ANCMSG(MSGID=402,                 
      .            MSGTYPE=MSGERROR,         
+     .            ANMODE=ANINFO_BLIND_1,    
+     .            PRMOD=MSG_PRINT) 
+C     
+      CALL ANCMSG(MSGID=2093,                 
+     .            MSGTYPE=MSGINFO,         
      .            ANMODE=ANINFO_BLIND_1,    
      .            PRMOD=MSG_PRINT) 
 C-------------------------------------

@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  SORTIE_MAIN                   source/output/sortie_main.F   
 Chd|-- called by -----------
@@ -363,7 +363,8 @@ C----------------------
      .  MANIM==8 .OR.MANIM==9 .OR.MANIM==10.OR.MANIM==11.OR.
      .  MANIM==12.OR.MANIM==13.OR.MANIM==14.OR.MANIM==15.OR.
      .  H3D_DATA%MH3D/=0))
-     .   .OR.H3D_DATA%N_VECT_PCONT_MAX>0)THEN
+     .   .OR.H3D_DATA%N_VECT_PCONT_MAX>0
+     .   .OR.H3D_DATA%N_VECT_PCONT2_MAX>0)THEN
         IF(NINTSTAMP==0)THEN
           CALL ANI_PCONT(IXS ,IXC    ,IXTG    ,FASOLFR  ,X      ,
      .               FNCONT  ,FTCONT,IAD_ELEM ,FR_ELEM  ,WEIGHT ,
@@ -387,6 +388,20 @@ C----------------------------------------------------
       IF(H3D_DATA%N_VECT_PCONT_MAX /=0) THEN
          CALL FCONT_MAX_OUTPUT(FNCONT,FNCONTG,NODGLOB,FNCONT_MAX,WEIGHT)
          CALL FCONT_MAX_OUTPUT(FTCONT,FTCONTG,NODGLOB,FTCONT_MAX,WEIGHT)
+      ENDIF 
+      IF(H3D_DATA%N_VECT_CONT2_MAX /=0) THEN
+         CALL FCONT2_MAX_OUTPUT(FNCONT2,FCONT2_MAX,WEIGHT)
+      ENDIF 
+      IF(H3D_DATA%N_VECT_PCONT2_MAX /=0) THEN
+         CALL FCONT2_MAX_OUTPUT(FNCONTP2,FNCONT2_MAX,WEIGHT)
+         CALL FCONT2_MAX_OUTPUT(FTCONTP2,FTCONT2_MAX,WEIGHT)
+      ENDIF 
+      IF(H3D_DATA%N_VECT_CONT2_MIN /=0) THEN
+         CALL FCONT2_MIN_OUTPUT(FNCONT2,FCONT2_MIN,WEIGHT)
+      ENDIF 
+      IF(H3D_DATA%N_VECT_PCONT2_MAX /=0) THEN
+         CALL FCONT2_MIN_OUTPUT(FNCONTP2,FNCONT2_MIN,WEIGHT)
+         CALL FCONT2_MIN_OUTPUT(FTCONTP2,FTCONT2_MIN,WEIGHT)
       ENDIF 
 
 C-----------------------------------------------

@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  RESOL                         source/engine/resol.F         
 Chd|-- called by -----------
@@ -3228,11 +3228,13 @@ C-------------------------------------------------------------------
           CALL TRACE_IN(10,0,ZERO)
         IF (IMON>0) CALL STARTIME(4,1)
         IF (IMONM > 0) CALL STARTIME(41,1)
+!$OMP PARALLEL
           CALL PFLUID(ILOADP  ,LOADP   ,NPC   ,TF   ,A         ,
      2                V     ,X      ,XFRAME  ,AR   ,VR        ,
      3                SENSOR_TAB,WEIGHT,TFEXC,IADS(I87M),
      4                FSKY    ,FSKY    ,LLOADP ,FEXT  ,H3D_DATA
      5                )
+!$OMP END PARALLEL
         IF (IMONM > 0) CALL STOPTIME(41,1)
         IF (IMON>0) CALL STOPTIME(4,1)
           CALL TRACE_OUT(10)
@@ -4892,7 +4894,7 @@ C
      3       LENR    ,FTHE , MCP, DMSPH,CONDN, 
      4       MS_2D,MCP_OFF,
      5       FORNEQS ,NFACNIT,LENC ,FANI ,H3D_DATA,
-     6       FANI(1,NFNCA+1) ,FANI(1,NFTCA+1))
+     6       FANI(1,NFNCA+1) ,FANI(1,NFTCA+1) )
 
           ENDIF
 C
@@ -4952,7 +4954,7 @@ C
      6     IRECVP_PXFEM,LENR1     ,LENS1   ,IADSDP_CRK,IADRCP_CRK  ,
      7     ISENDP_CRK  ,IRECVP_CRK,FSKYD   ,CRKNODIAD ,CRKSKY      ,
      8     FORNEQSKY   ,NFACNIT  ,LENC     , FANI     ,H3D_DATA    ,
-     9     FANI(1,NFNCA+1) ,FANI(1,NFTCA+1))
+     9     FANI(1,NFNCA+1),FANI(1,NFTCA+1) )
 C
         ENDIF
         IF (IMON>0) CALL STOPTIME(10,1)
@@ -5531,7 +5533,7 @@ C===============================================================================
      7         NATIV_SMS,DMINT2,ANIN(NDAMA2+1),NB_FRI2M ,FR_LOCI2M,
      8         DT2T  ,NELTST ,ITYPTST   ,INTBUF_TAB     ,TEMP     ,MCP   ,
      9         FTHE  ,CONDN  ,
-     A         H3D_DATA,T2FAC_SMS,FANI(1,NFNCA2+1),FANI(1,NFTCA2+1))
+     A         H3D_DATA,T2FAC_SMS,FANI(1,NFNCA2+1),FANI(1,NFTCA2+1)) 
           ENDDO
           IF (IMONM > 0) CALL STOPTIME(28,1)
           IF (IMON>0) THEN

@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  RADIOSS2                      source/engine/radioss2.F      
 Chd|-- called by -----------
@@ -1323,11 +1323,11 @@ C   thermal bc
       IF(NFXFLUX > 0)  CALL FXFLUXRREST(IBFFLUX, FBFFLUX)
       IF(NFXTEMP > 0)  CALL FXTEMPRREST(IBFTEMP, FBFTEMP)
       IF (IPLYXFEM > 0) THEN
-      CALL PLYXFEM_RREST(MS_PLY,ZI_PLY,INOD_PXFEM,IEL_PXFEM,
+        CALL PLYXFEM_RREST(MS_PLY,ZI_PLY,INOD_PXFEM,IEL_PXFEM,
      .                        ICODE_PLY,ISKEW_PLY,MSZ2)
-        CALL  PLYXFEM_RRESTANIM()
-        CALL  PLYXFEM_RAVUPLY()
       ENDIF
+      CALL  PLYXFEM_RRESTANIM()
+      IF(IPLYXFEM > 0) CALL  PLYXFEM_RAVUPLY()
       IF(NLOADC   > 0) CALL CFIELDREST(CFIELD)
       IF(NLOADP   > 0) CALL LOADPREST(LOADP)
 C--------------------------------------------
@@ -1337,7 +1337,7 @@ C--------------------------------------------
          CALL READ_DB(DGAPLOADINT, NINTER*NLOADP_HYD )
       ENDIF
       IF(ICRACK3D > 0) CALL CRKXFEM_RREST(INOD_CRKXFEM,IEL_CRKXFEM,NODLEVXF)
-      IF(ICRACK3D > 0) CALL CRKXFEM_RRESTANIM()
+      CALL CRKXFEM_RRESTANIM()
       IF(IALEFVM  > 0) CALL READ_DB(FCELL ,6*NUMELS)
       IF(IALELAG  > 0) CALL ALELAG_RREST()
 C--------------------------------------

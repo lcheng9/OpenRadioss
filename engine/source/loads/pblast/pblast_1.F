@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  PBLAST_1                      source/loads/pblast/pblast_1.F
 Chd|-- called by -----------
@@ -172,7 +172,7 @@ C-----------------------------------------------
       !   LOOP ON SEGMENTS (4N or 3N)                                                                                                                                                                 
       !---------------------------------------------  
                                                                                                                                                  
-!$OMP DO SCHEDULE(DYNAMIC,MVSIZ)
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)
       DO I = 1,ISIZ_SEG   
         N1=LLOADP(ILOADP(4,NL)+4*(I-1))                                                                                                                                                               
         N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)                                                                                                                                                             
@@ -551,7 +551,7 @@ C-----------------------------------------------
       !-------------------------------------------!                                                
       ! SPMD/SMP Parith/OFF                                                                        
       IF(IPARIT==0) THEN 
-!$OMP DO SCHEDULE(DYNAMIC,MVSIZ)
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)
         DO I = 1,ISIZ_SEG                                                                          
           N1=LLOADP(ILOADP(4,NL)+4*(I-1))                                                          
           N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)                                                        
@@ -574,7 +574,7 @@ C-----------------------------------------------
         ENDDO 
 !$OMP END DO                                                                                             
       ELSE     
-!$OMP DO SCHEDULE(DYNAMIC,MVSIZ) 
+!$OMP DO SCHEDULE(GUIDED,MVSIZ) 
         DO I = 1,ISIZ_SEG                                                                          
           IAD         =IADC(ILOADP(4,NL)+4*(I-1))                                                  
           FSKY(1,IAD) =PBLAST_TAB(IL)%FX(I)                                                                       
@@ -604,7 +604,7 @@ C-----------------------------------------------
       !-------------------------------------------!                                                
       IF(IANIM>0) THEN                                                                             
         IF(IANIM > 0) THEN  
-!$OMP DO SCHEDULE(DYNAMIC,MVSIZ) 
+!$OMP DO SCHEDULE(GUIDED,MVSIZ) 
           DO I = 1,ISIZ_SEG                                                                        
             N1=PBLAST_TAB(IL)%N(1,I)                                                                              
             N2=PBLAST_TAB(IL)%N(2,I)                                                                              

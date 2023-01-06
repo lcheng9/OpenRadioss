@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  INTTI1                        source/interfaces/interf/intti1.F
 Chd|-- called by -----------
@@ -302,8 +302,7 @@ C---
         IF(IDT_THERM == 1) I2SIZETH = I2SIZETH + 1
       ELSE
           I2SIZETH = I2SIZE  
-      ENDIF
-                                                           
+      ENDIF                                                           
 C------------------------------------------------------------
       IF (IMACH == 3 .AND. I2OK == 1) THEN
 C version spmd avec plus d'1 proc : sommer A et AR sur les noeuds main
@@ -314,12 +313,14 @@ C version spmd avec plus d'1 proc : sommer A et AR sur les noeuds main
               CALL SPMD_EXCH_A_INT2_AMS(
      .            A    ,AR   ,MS      ,IN     ,STIFN,
      .            STIFR,FR_I2M,IAD_I2M,LCOMI2M,I2SIZETH,
-     .            NB_FRI2M,FR_LOCI2M,INTTH2,FTHE,CONDN)
+     .            NB_FRI2M,FR_LOCI2M,INTTH2,FTHE,CONDN,
+     .            FNCONT,FNCONTP,FTCONTP,H3D_DATA)
             ELSE
               CALL SPMD_EXCH_A_INT2(
      .            A    ,AR   ,MS      ,IN     ,STIFN,
      .            STIFR,FR_I2M,IAD_I2M,LCOMI2M,I2SIZETH,
-     .            INTTH2,FTHE,CONDN)
+     .            INTTH2,FTHE ,CONDN  ,FNCONT ,FNCONTP ,
+     .            FTCONTP,H3D_DATA )
              ENDIF
           ELSE
             LCOMI2M = IAD_I2M(NSPMD+1)
@@ -328,12 +329,13 @@ C version spmd avec plus d'1 proc : sommer A et AR sur les noeuds main
      .         A    ,AR   ,MS      ,IN     ,STIFN,
      .         STIFR,FR_I2M,IAD_I2M,LCOMI2M,I2SIZETH,
      .         NB_FRI2M,FR_LOCI2M,TAGNOD,INTTH2,FTHE,
-     .         CONDN)
+     .         CONDN,FNCONT,FNCONTP,FTCONTP,H3D_DATA )
             ELSE
               CALL SPMD_EXCH_A_INT2H(
      .         A    ,AR   ,MS      ,IN     ,STIFN,
      .         STIFR,FR_I2M,IAD_I2M,LCOMI2M,I2SIZETH,
-     .         TAGNOD,INTTH2,FTHE,CONDN)
+     .         TAGNOD,INTTH2,FTHE  ,CONDN  ,FNCONT  ,
+     .         FNCONTP,FTCONTP,H3D_DATA )
             ENDIF
           END IF
         ELSEIF (IPARIT > 0) THEN
@@ -341,10 +343,12 @@ C         version spmd p/on
           IF (NSPMD > 1) THEN
             LENS = FR_NBCCI2(1,NSPMD+1)
             LENR = FR_NBCCI2(2,NSPMD+1)
+            LCOMI2M = IAD_I2M(NSPMD+1)
             CALL SPMD_EXCH_A_INT2_PON(
-     1         FR_I2M,IAD_I2M,ADDCNI2,PROCNI2,FR_NBCCI2,
-     2         I2SIZETH,LENR   ,LENS   ,FSKYI2,INTTH2,
-     3         FTHESKYI2,CONDNSKYI2 ,I2SIZE)
+     1         FR_I2M  ,IAD_I2M,ADDCNI2,PROCNI2,FR_NBCCI2,
+     2         I2SIZETH,LENR   ,LENS   ,FSKYI2 ,INTTH2   ,
+     3         FTHESKYI2,CONDNSKYI2 ,I2SIZE,LCOMI2M,FNCONT,
+     4         FNCONTP,FTCONTP,H3D_DATA )
           END IF
 C
 C Routine assemblage parith/ON

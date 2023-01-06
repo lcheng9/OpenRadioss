@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  WRCOMI                        source/output/restart/wrcomm.F
 Chd|-- called by -----------
@@ -1597,9 +1597,19 @@ C Friction interface
 !     H3D -> number of skid lines    
       LVARINT=LVARINT+1
       TABVINT(LVARINT)=H3D_DATA%N_SCAL_SKID
-!     H3D ANIM-> Is maximum contact force computed   
+!     H3D ANIM-> Is maximum contact force/contact pressure computed   
       LVARINT=LVARINT+1
       TABVINT(LVARINT) = IFCONTMAX
+      LVARINT=LVARINT+1
+      TABVINT(LVARINT) = IFCONTPMAX
+      LVARINT=LVARINT+1
+      TABVINT(LVARINT) = IFCONT2MAX
+      LVARINT=LVARINT+1
+      TABVINT(LVARINT) = IFCONTP2MAX
+      LVARINT=LVARINT+1
+      TABVINT(LVARINT) = IFCONT2MIN
+      LVARINT=LVARINT+1
+      TABVINT(LVARINT) = IFCONTP2MIN
 C  NITSCHE METHOD
       LVARINT=LVARINT+1
       TABVINT(LVARINT) = NITSCHE

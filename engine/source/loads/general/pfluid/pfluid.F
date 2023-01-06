@@ -1,25 +1,25 @@
 Copyright>        OpenRadioss
-Copyright>        Copyright (C) 1986-2022 Altair Engineering Inc.
-Copyright>    
+Copyright>        Copyright (C) 1986-2023 Altair Engineering Inc.
+Copyright>
 Copyright>        This program is free software: you can redistribute it and/or modify
 Copyright>        it under the terms of the GNU Affero General Public License as published by
 Copyright>        the Free Software Foundation, either version 3 of the License, or
 Copyright>        (at your option) any later version.
-Copyright>    
+Copyright>
 Copyright>        This program is distributed in the hope that it will be useful,
 Copyright>        but WITHOUT ANY WARRANTY; without even the implied warranty of
 Copyright>        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 Copyright>        GNU Affero General Public License for more details.
-Copyright>    
+Copyright>
 Copyright>        You should have received a copy of the GNU Affero General Public License
 Copyright>        along with this program.  If not, see <https://www.gnu.org/licenses/>.
-Copyright>    
-Copyright>    
-Copyright>        Commercial Alternative: Altair Radioss Software 
-Copyright>    
-Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss 
-Copyright>        software under a commercial license.  Contact Altair to discuss further if the 
-Copyright>        commercial version may interest you: https://www.altair.com/radioss/.    
+Copyright>
+Copyright>
+Copyright>        Commercial Alternative: Altair Radioss Software
+Copyright>
+Copyright>        As an alternative to this open-source version, Altair also offers Altair Radioss
+Copyright>        software under a commercial license.  Contact Altair to discuss further if the
+Copyright>        commercial version may interest you: https://www.altair.com/radioss/.
 Chd|====================================================================
 Chd|  PFLUID                        source/loads/general/pfluid/pfluid.F
 Chd|-- called by -----------
@@ -59,6 +59,7 @@ C-----------------------------------------------
 #include      "scr16_c.inc"
 #include      "scr17_c.inc"
 #include      "tabsiz_c.inc"
+#include      "mvsiz_p.inc"
 C-----------------------------------------------
 C   E x t e r n a l  F u n c t i o n s
 C-----------------------------------------------
@@ -127,7 +128,8 @@ C-----------------------------------------------
           ELSE                                                                                     
              TS = TT-SENSOR_TAB(ISENS)%TSTART                                                              
              IF(TS < ZERO) CYCLE                                                                   
-          ENDIF                                                                                    
+          ENDIF  
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)                                                                                            
           DO I = 1,ILOADP(1,NL)/4                                                                  
             N1=LLOADP(ILOADP(4,NL)+4*(I-1))                                                        
             N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)                                                      
@@ -331,7 +333,9 @@ C-----------------------------------------------
      +                           +FZ*(V(3,N1)+V(3,N2)+V(3,N3)))   
                                                        
             ENDIF                                                                                  
-          ENDDO !next I                                                                                 
+          ENDDO !next I   
+!$OMP END DO
+                                                                                        
         ENDDO !nextNL
 
 #include "atomic.inc"
@@ -365,6 +369,7 @@ C-----------------------------------------------
            XSENS = ONE
            ! -------------
            ! flush fsky array to 0.
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)           
            DO I = 1,ILOADP(1,NL)/4
              N1=LLOADP(ILOADP(4,NL)+4*(I-1))
              N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)
@@ -381,6 +386,7 @@ C-----------------------------------------------
                   FSKY(1:3,IAD) = ZERO
              ENDDO
            ENDDO
+!$OMP END DO           
            ! -------------
            DO K=1,NSENSOR
              IF(ILOADP(6,NL) == SENSOR_TAB(K)%SENS_ID) ISENS=K
@@ -391,6 +397,8 @@ C-----------------------------------------------
               TS = TT- SENSOR_TAB(ISENS)%TSTART 
               IF(TS < ZERO) CYCLE     
            ENDIF
+
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)                      
            DO I = 1,ILOADP(1,NL)/4
              N1=LLOADP(ILOADP(4,NL)+4*(I-1))
              N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)
@@ -603,8 +611,9 @@ C-----------------------------------------------
      +                          +FY*(V(2,N1)+V(2,N2)+V(2,N3))
      +                          +FZ*(V(3,N1)+V(3,N2)+V(3,N3)))
              ENDIF
-            ENDDO!next I
-          ENDDO!next NL
+           ENDDO!next I
+!$OMP END DO           
+         ENDDO!next NL
 
 #include "atomic.inc"
                 TFEXT = TFEXT + TFEXTT
@@ -641,6 +650,7 @@ C---------------------
               TS = TT- SENSOR_TAB(ISENS)%TSTART 
               IF(TS < ZERO) CYCLE     
            ENDIF
+!$OMP DO SCHEDULE(GUIDED,MVSIZ)           
            DO I = 1,ILOADP(1,NL)/4
              N1=LLOADP(ILOADP(4,NL)+4*(I-1))
              N2=LLOADP(ILOADP(4,NL)+4*(I-1)+1)
@@ -853,6 +863,7 @@ C---------------------
      +                           +FZ*(V(3,N1)+V(3,N2)+V(3,N3)))
              ENDIF
            ENDDO!next I
+!$OMP END DO           
          ENDDO!next NL
 C
 #include "atomic.inc"
